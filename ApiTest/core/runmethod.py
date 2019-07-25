@@ -13,17 +13,17 @@ def post_main(url, data, header=None):
     """
     # requests.packages.urllib3.disable_warnings()  # 禁用HTTPS证书警告
     if header is None:
-        return requests.post(url=url, data=data, verify=False).json()
+        return requests.post(url=url, data=data, verify=False)      # .json()
     else:
-        return requests.post(url=url, data=data, headers=header, verify=False).json()   # verify=False 忽略https
+        return requests.post(url=url, data=data, headers=header, verify=False)      # .json()   # verify=False 忽略https
 
 
 def get_mian(url, data=None, header=None):
     if header is None:
-        a = requests.get(url, data).json()
+        a = requests.get(url, data)     #.json()
         return a
     else:
-        return requests.get(url, data, headers=header, verify=False).json()
+        return requests.get(url, data, headers=header, verify=False)       # .json()
 
 
 def run_url(method, url, data=None, header=None):
