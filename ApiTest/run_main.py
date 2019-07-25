@@ -105,15 +105,12 @@ def get_case(file_name, url_name):
             smu = assertion.re_requests(i['预期结果'].strip(), re_data_sum)
             # smu = assertion.compare_json_data(re_data_sum, i['预期结果'].strip())   # 验证返回完整数据以及数据类型， strip(): 首尾去空格
             if smu is True:
-                finai = 'Test: ' + i['预期结果']
-                report_yuanzu(i, re_data, finai, 0)
-                # report(i, re_data, 'pass', smu)
-                print(i['CaseId'], finai)
+                s, finai = 0, 'Test: ' + i['预期结果']
             else:
-                finai = 'Test: ', '▇▇▇ No expected results，预期：' + i['预期结果'].strip(), '-->>>实际：' + re_data_sum
-                report_yuanzu(i, re_data, finai, 1)
-                # report(i, re_data, 'fail', smu)
-                print(i['CaseId'], finai)
+                s, finai = 1, ('Test: ', '▇▇▇ No expected results，预期Include：' + i['预期结果'].strip(), '-->>>实际：' + re_data_sum)
+            # report(i, re_data, s, smu)
+            report_yuanzu(i, re_data, finai, s)
+            print(i['CaseId'], finai)
 
 
 if __name__ == '__main__':
@@ -122,7 +119,7 @@ if __name__ == '__main__':
     url_case = "url_IP"    # 'url_IP'  "url_name"
     get_case(file_case, url_case)
     end = time.process_time()       # 结束时间
-    run_time = end - start
+    # run_time = end - start
     # file_name = 'TestBaogao' + (time.strftime("%Y-%m-%d %H-%M", time.localtime()))         # 测试报告名称，当前时间
 
     # 报告一
