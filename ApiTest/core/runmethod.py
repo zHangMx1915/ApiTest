@@ -20,8 +20,7 @@ def post_main(url, data, header=None):
 
 def get_mian(url, data=None, header=None):
     if header is None:
-        a = requests.get(url, data)     #.json()
-        return a
+        return requests.get(url, data)     #.json()
     else:
         return requests.get(url, data, headers=header, verify=False)       # .json()
 
@@ -35,8 +34,7 @@ def run_url(method, url, data=None, header=None):
         # sre = json.dumps(re, ensure_ascii=False, sort_keys=True, indent=2)
         sre = re
     except json.decoder.JSONDecodeError as e:
-        e = str(e)
-        sre = '请检查接口URL及路径！' + 'json.decoder.JSONDecodeError:' + e + '；URL:' + url
+        sre = '请检查接口URL及路径！' + 'json.decoder.JSONDecodeError:' + str(e) + '；URL:' + url
     except Exception as e:
         sre = e
     return sre

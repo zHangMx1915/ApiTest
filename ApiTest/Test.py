@@ -39,14 +39,5 @@ headers = {
 
 
 urls = 'http://192.168.1.109:8080/login/dologin'
-data = {
-        'username': '60088',
-        'password': '123'
-}
 
-data = str(data)
-
-print(type(data))
-
-data = json.dumps(data)
-print(type(data))
+print(url[0])

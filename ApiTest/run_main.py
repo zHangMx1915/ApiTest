@@ -7,7 +7,7 @@ from tools import assertion
 
 
 case_num = []
-
+test_html_list = []
 
 def get_rely_data_bak(re_value, key_name):
     # 返回所有符合规则的值的列表
@@ -60,6 +60,7 @@ def rely_api(case_list, rely_case, url, rely_data):
             return datas
 
 
+# 测试报告一
 def report(i, re_data, final, smu):
     re_sum = []
     re_sum.append(i['CaseId'])
@@ -70,10 +71,9 @@ def report(i, re_data, final, smu):
     re_sum.append(i['依赖id'])
     # re_sum.append(re_data['status'])
     try:
-        re_sum.append(re_data['status'])
+        re_sum.append((re_data.json())['status'])
     except BaseException:
         re_sum.append(re_data.encoding)
-
     if smu is True:
         re_sum.append(re_data)
     else:
@@ -82,11 +82,11 @@ def report(i, re_data, final, smu):
     case_num.append(re_sum)
 
 
-def report_yuanzu(smu, case_ji, case_run, case_error):
-    if smu is True:
-        i = 0
-    else:
-        i = 1
+# 测试报告二
+def report_yuanzu(i, re_data, finai, num=2):
+    data_2 = "用例集" + i['CaseId'][0] + ',' + i['CaseId'] + '<br/>' + i['名称']
+    re_sum = (num, data_2, str(re_data.text), '\n\n' + str(finai))
+    test_html_list.append(re_sum)
 
 
 def get_case(file_name, url_name):
@@ -103,28 +103,35 @@ def get_case(file_name, url_name):
             except:
                 re_data_sum = re_data.text
             smu = assertion.re_requests(i['预期结果'].strip(), re_data_sum)
-            # smu = assertion.compare_json_data(re_data_sum, i['预期结果'].strip())       #######       # """验证返回完整数据以及数据类型"""     # strip(): 首尾去空格
+            # smu = assertion.compare_json_data(re_data_sum, i['预期结果'].strip())   # 验证返回完整数据以及数据类型， strip(): 首尾去空格
             if smu is True:
-                report(i, re_data, 'pass', smu)
-                print(i['CaseId'], smu)
+                finai = 'Test: ' + i['预期结果']
+                report_yuanzu(i, re_data, finai, 0)
+                # report(i, re_data, 'pass', smu)
+                print(i['CaseId'], finai)
             else:
-                report(i, re_data, 'fail', smu)
-                print(i['CaseId'], '▇▇▇预期：' + i['预期结果'].strip(), '-->>>实际：' + re_data_sum)
+                finai = 'Test: ', '▇▇▇ No expected results，预期：' + i['预期结果'].strip(), '-->>>实际：' + re_data_sum
+                report_yuanzu(i, re_data, finai, 1)
+                # report(i, re_data, 'fail', smu)
+                print(i['CaseId'], finai)
 
 
 if __name__ == '__main__':
     start = time.process_time()     # 开始时间
     file_case = 'ApiCase.csv'
-    url_case = "url_name"    # 'url_IP'  "url_name"
+    url_case = "url_IP"    # 'url_IP'  "url_name"
     get_case(file_case, url_case)
     end = time.process_time()       # 结束时间
     run_time = end - start
-    file_name = '测试报告' + (time.strftime("%Y-%m-%d %H-%M", time.localtime()))         # 测试报告名称，当前时间
-    html.generate_html(file_name, run_time, case_num)
+    # file_name = 'TestBaogao' + (time.strftime("%Y-%m-%d %H-%M", time.localtime()))         # 测试报告名称，当前时间
 
-    # 报告
-    # report = '../test_file/ApiTest/log/创建用户测试报告%s.html' % time.strftime("%H-%M", time.localtime())
-    # stdout = open(report, 'wb')
-    # report = Test_Html.HTMLTestRunner(start, end, stdout, title='测试报告', description='用例执行情况')
-    # report.run()
+    # 报告一
+    # html.generate_html(file_name, run_time, case_num)
+
+    # 报告二
+    report = '../test_file/ApiTest/log/创建用户测试报告%s.html' % time.strftime("%H-%M", time.localtime())
+    stdout = open(report, 'wb')
+    report = Test_Html.HTMLTestRunner(start, end, stdout, title='TestBaogao', description='用例执行情况')
+    report.run(test_html_list)
+
     # send_email.file_mail("TestReport", file_name, operation_json.get_config('email'))    # 发送邮件

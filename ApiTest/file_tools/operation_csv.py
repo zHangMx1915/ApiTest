@@ -7,7 +7,7 @@ def read_csv(file_name):
     # file_name: csv 文件名
     path = '../test_file/ApiTest/case/'
     file_path = path + file_name
-    with open(file_path) as csv_file:
+    with open(file_path, encoding='gbk') as csv_file:
         reader = [each for each in csv.DictReader(csv_file)]     # 读取csv文件
     return reader
 

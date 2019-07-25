@@ -465,7 +465,7 @@ table       { font-size: 100%; }
 
 /* -- report ------------------------------------------------------------------------ */
 #total_row  { font-weight: bold; }
-.passCase   { color: #30e2a7; }
+.passCase   { color: #00CD66; }
 .failCase   { color: #d9534f; font-weight: bold; }
 .errorCase  { color: #f0ad4e; font-weight: bold; }
 .hiddenRow  { display: none; }
@@ -752,7 +752,7 @@ class HTMLTestRunner(Template_mixin):
         else:
             self.tester = tester
 
-    def run(self,result):
+    def run(self, result):
         # "Run the given test case or test suite."
         self.generateReport(result)
         return result
@@ -764,14 +764,12 @@ class HTMLTestRunner(Template_mixin):
         classes = []
         for n, t, o, e in result_list:
             cls = t.split(',')[0]
-            t = t.split(',')[0]
+            t = t.split(',')[1]
             if cls not in rmap:
                 rmap[cls] = []
                 classes.append(cls)
-                print(classes)
             rmap[cls].append((n,t,o,e))      # n为用例执行状态（0：通过，1失败，2错误），e为用例名称，o为返回结果，e为错误信息
         r = [(cls, rmap[cls]) for cls in classes]
-        print(r)
         return r
 
     # 替换测试结果status为通过率 --Findyou
