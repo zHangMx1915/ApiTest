@@ -20,13 +20,15 @@ def check_data(i):
     num = i['CaseId']
     if data:
         if data.startswith('{') and data.endswith('}'):   # 判断是否以{}开头和结尾
-            return eval(data)                             # eval：将{}字符串转换为字典
+            sum_data = eval(data)
+            return sum_data     #eval(data)                             # eval：将{}字符串转换为字典
         else:
             try:
                 with open("../test_file/ApiTest/case/data_case.json", 'r', encoding='utf-8') as fp:
-                    case = json.load(fp)
+                    case = json.load(fp)        # dumps
+                    # case = json.loads(fp)
                 return case[data]
             except KeyError as e:
-                print('Test-%s:  ▇*******▇>> fail:  Error！请检查请求参数！ 你是这样写的：%s' % (num, e))
+                print('%s:  ▇*******▇>> fail:  Error！请检查请求参数！ 你是这样写的：%s' % (num, e))
             except Exception as e:
-                print(e, 'Test-%s:  ▇*******▇>> fail:  Error！请检查请求参数！参数：%s' % (num, data))
+                print(e, '%s:  ▇*******▇>> fail:  Error！请检查请求参数！参数：%s' % (num, data))

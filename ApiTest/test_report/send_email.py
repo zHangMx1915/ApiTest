@@ -54,4 +54,4 @@ def file_mail(content, file_name, user_mail):       # file_name: 邮件附件路
         smtpObj.sendmail(send_users, user_list, message.as_string())
         print("邮件发送成功")
     except smtplib.SMTPException as se:
-        print(f"Error: 无法发送邮件.Case:{se}")
+        print("Error: 无法发送邮件.Case:{se}")
