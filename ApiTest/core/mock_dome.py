@@ -1,4 +1,4 @@
-# coding=utf-8
+# -*-coding:utf_8-*-
 # import mock
 #
 #
@@ -15,6 +15,6 @@
 #     res = method(url, requests, data)
 #
 #     return res
-
-# re = mock_test(url='192.168.1.5', requests='get', data=1, response_data='1')
+#
+# re = mock_test(url='192.168.1.5', requests='get', data=1, response_data='你好')
 # print(re)

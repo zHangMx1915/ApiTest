@@ -1,3 +1,4 @@
+# -*-coding:utf_8-*-
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -29,7 +30,7 @@ def send_email(sub, content, user_mail):
 
 
 # 发送带有附件的邮件
-def file_mail(content, file_name, user_mail):       # file_name: 邮件附件路径 + 文件名
+def file_mail(content, user_mail, file_name='测试报告'):       # file_name: 邮件附件路径 + 文件名
     send_users = user_mail['send_user']
     passwords = user_mail['password']
     user_list = user_mail['Receipt']

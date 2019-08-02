@@ -6,9 +6,13 @@ import json
 
 def rely_post(rely_run, url, data, header):
     if header is None:
-        return rely_run.post(url=url, data=data, verify=False)      # .json()
+        s = rely_run.post(url=url, data=data, verify=False)  # .json()
+        cookie = rely_run.cookies.get_dict()
+        return s, cookie
     else:
-        return rely_run.post(url=url, data=data, headers=header, verify=False)
+        s = rely_run.post(url=url, data=data, headers=header, verify=False)
+        cookie = rely_run.cookies.get_dict()
+        return s, cookie
 
 
 def rely_get(rely_run, url, data, header):
@@ -27,7 +31,7 @@ def post_main(url, data, header=None):
     """
     # requests.packages.urllib3.disable_warnings()   # 禁用HTTPS证书警告
     if header is None:
-        return requests.post(url=url, data=data, verify=False)      # .json()
+        return requests.post(url=url, data=data, verify=False)                      #.json()
     else:
         return requests.post(url=url, data=data, headers=header, verify=False)      # .json()   # verify=False 忽略https
 
@@ -39,19 +43,21 @@ def get_mian(url, data=None, header=None):
         return requests.get(url, data, headers=header, verify=False)      # .json()
 
 
-def run_url(rely_run, method, url, data=None, header=None, rely_data=None):
+def run_url(method, url, data=None, header=None, rely_data=None):
+    cookie = None
     if rely_data == 'cookie':
+        rely_run = requests.session()
         try:
             if method == 'post':
-                re = rely_post(rely_run, url, data, header)
+                re, cookie = rely_post(rely_run, url, data, header)
             else:
-                re = rely_get(rely_run, url, data, header)
+                re, cookie = rely_get(rely_run, url, data, header)
             sre = re
         except json.decoder.JSONDecodeError as e:
             sre = '请检查接口URL及路径！' + 'json.decoder.JSONDecodeError:' + str(e) + '；URL:' + url
         except Exception as e:
             sre = e
-        return sre
+        return sre, cookie
     else:
         try:
             if method == 'post':
@@ -64,7 +70,8 @@ def run_url(rely_run, method, url, data=None, header=None, rely_data=None):
             sre = '请检查接口URL及路径！' + 'json.decoder.JSONDecodeError:' + str(e) + '；URL:' + url
         except Exception as e:
             sre = e
-        return sre
+        return sre, cookie
+
 
     # if method == 'post':
     #     return post_main(url, data, header)
